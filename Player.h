@@ -22,6 +22,8 @@ public:
 	void Reset();
 
 	int count;
+
+	bool GetReversX() { return ReversX; }
 private:
 	int hImage;
 	int kazu;
@@ -37,6 +39,7 @@ private:
 	int frameCounter;
 	float transparency;//“§–¾“x
 	float readyTimer;
+	bool ReversX;
 
 	enum State {
 		S_Walk=0,

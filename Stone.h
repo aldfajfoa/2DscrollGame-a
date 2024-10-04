@@ -1,5 +1,6 @@
 #pragma once
 #include "Engine/GameObject.h"
+class Player;
 
 /// <summary>
 /// ƒvƒŒƒCƒ„[‚ª“Š‚°‚éÎ
@@ -14,6 +15,7 @@ public:
 	void SetPosition(XMFLOAT3 pos);
 	void Reset();
 private:
+	Player* pPlayer;
 	int hImage;
 	int timer;
 	bool prevSpaceKey;

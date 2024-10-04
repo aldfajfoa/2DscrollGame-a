@@ -18,7 +18,6 @@ namespace {
 	const int MAX_STONE = 20; //小石を投げれる最大数
 	float STONE_NUMBER = 940;
 	//const float INITIALVELOCITY = 18.0f;
-
 }
 
 
@@ -74,6 +73,7 @@ void Player::Update()
 	//前進
 	if (CheckHitKey(KEY_INPUT_D))
 	{
+		ReversX = false;
 		transform_.position_.x += MOVE_SPEED;
 		if (++frameCounter >= 8)
 		{
@@ -89,6 +89,7 @@ void Player::Update()
 	}
 	else if (CheckHitKey(KEY_INPUT_A))//後退
 	{
+		ReversX = true;
 		if (transform_.position_.x <= 1)
 		{
 			transform_.position_.x = 0;
@@ -101,7 +102,7 @@ void Player::Update()
 				animFrame = (animFrame + 1) % 3;
 				frameCounter = 0;
 			}
-			int hitX = transform_.position_.x+5;
+			int hitX = transform_.position_.x + 5;
 			int hitY = transform_.position_.y + 60;
 			if (pField != nullptr)
 			{
@@ -119,7 +120,7 @@ void Player::Update()
 	jumpSpeed += GRAVITY;//速度 += 加速度
 	transform_.position_.y += jumpSpeed; //座標 += 速度
 
-	
+
 	if (pField != nullptr)
 	{
 		//(50,64)と(14,64)も見る
@@ -156,7 +157,7 @@ void Player::Update()
 			onGround = false;
 		}
 	}
-	
+
 
 	//石を投げる
 	if (count == MAX_STONE)
@@ -245,7 +246,9 @@ void Player::Update()
 	//ここでカメラ位置の調整
 	Camera* cam = GetParent()->FindGameObject<Camera>();
 	int x = (int)transform_.position_.x - cam->GetValue();
-	if (x <= 1)
+
+	Field* field = GetParent()->FindGameObject<Field>();
+	/*if (x <= 1)
 	{
 		x = 1;
 		cam->SetValue((int)transform_.position_.x);
@@ -255,6 +258,18 @@ void Player::Update()
 		if (x > 400)
 		{
 			x = 400;
+			cam->SetValue((int)transform_.position_.x - x);
+		}
+	}*/
+	if (field->GetRightSc()) {
+		if (x > 600) {
+			x = 600;
+			cam->SetValue((int)transform_.position_.x - x);
+		}
+	}
+	if (field->GetLeftSc()) {
+		if (x < 500) {
+			x = 500;
 			cam->SetValue((int)transform_.position_.x - x);
 		}
 	}
@@ -292,7 +307,7 @@ void Player::Draw()
 	{
 		x -= cam->GetValue();
 	}
-	DrawRectGraph(x, y, animFrame * 80, 180, 80, 88, hImage, TRUE);
+	DrawRectGraph(x, y, animFrame * 80, 180, 80, 88, hImage, TRUE,ReversX);
 }
 
 //プレイヤーのポジション

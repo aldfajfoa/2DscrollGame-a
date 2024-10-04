@@ -15,6 +15,7 @@ Stone::Stone(GameObject* scene) : GameObject(scene)
 {
 	hImage = LoadGraph("Assets/stone.png");
 	assert(hImage > 0);
+	pPlayer = GetParent()->FindGameObject<Player>();
 }
 
 Stone::~Stone()
@@ -30,22 +31,29 @@ void Stone::Update()
 
 	Field* pField = GetParent()->FindGameObject<Field>();
 
-	int push = pField->CollisionRight(transform_.position_.x + 30, transform_.position_.y + 20);
+	int push = pField->CollisionRight(transform_.position_.x + 25, transform_.position_.y + 20);
 
 	if (push > 1)
 	{
 		int tmp = transform_.position_.x;
-		transform_.position_.x -= tmp % 32/4;
+		transform_.position_.x -= tmp % 32/10;
+	}
+
+	int push = pField->CollisionLeft(transform_.position_.x-25, transform_.position_.y + 20);
+
+	if (push < 1)
+	{
+		int tmp = transform_.position_.x;
+		transform_.position_.x += tmp % 32 / 10;
 	}
 
 	if (pField != nullptr)
 	{
-		int push = pField->CollisionDown(transform_.position_.x + 17, transform_.position_.y + 20);
+		int push = pField->CollisionDown(transform_.position_.x+10, transform_.position_.y + 20);
 
 		if (push > 1)
 		{
 			transform_.position_.y -= push;
-			//transform_.position_.x -= push - 2;
 			jumpSpeed = 0.0f;
 			onGround = true;
 		}
@@ -53,12 +61,19 @@ void Stone::Update()
 
 	if (onGround == false)
 	{
-		transform_.position_.x += MOVE_SPEED;
+		if (pPlayer->GetReversX() == false) 
+		{
+			transform_.position_.x += MOVE_SPEED;
+		}
+		else if (pPlayer->GetReversX())
+		{
+			transform_.position_.x -= MOVE_SPEED;
+		}
 		transform_.position_.y -= sqrtf(2 * GRAVITY * JUMP_HEIGHT);
 
 		if (pField != nullptr)
 		{
-			int push = pField->CollisionDown(transform_.position_.x + 5, transform_.position_.y + 20);
+			int push = pField->CollisionDown(transform_.position_.x, transform_.position_.y + 20);
 
 			if (push > 0)
 			{
@@ -72,7 +87,6 @@ void Stone::Update()
 
 	if (timer == 2)
 	{
-		Player* pPlayer = GetParent()->FindGameObject<Player>();
 		pPlayer->SetPosition(transform_.position_.x-40, transform_.position_.y - 20);
 	}
 

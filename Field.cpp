@@ -68,7 +68,7 @@ void Field::Reset()
 			case 0://player
 			{
 				Player* pplayer = GetParent()->FindGameObject<Player>();
-				pplayer->SetPosition(w * 32, h * 32);
+				pplayer->SetPosition(w * 32, h * 32-15);
 			}
 			break;
 			case 1://bird
@@ -114,12 +114,14 @@ void Field::Draw()
 
 	DrawGraph(0, 50, sousa, TRUE);
 
-	int scroll = 0;
+	scroll = 0;
 	Camera* cam = GetParent()->FindGameObject<Camera>();
 	if (cam != nullptr) 
 	{
 		scroll = cam->GetValue();
 	}
+
+	IsScroll();
 
 	for (int y = 0; y < height; y++) 
 	{
@@ -147,7 +149,7 @@ int Field::CollisionLeft(int x, int y)
 	if (IsWallBlock(x, y)) 
 	{
 		//“–‚½‚Á‚Ä‚¢‚é‚Ì‚ÅA‚ß‚èž‚ñ‚¾—Ê‚ð•Ô‚·
-		return x % 32/12;
+		return x % 32-1;
 	}
 	else
 		return 0;
@@ -173,6 +175,25 @@ int Field::CollisionUp(int x, int y)
 	}
 	else
 		return 0;
+}
+
+void Field::IsScroll()
+{
+	if (scroll <= 0) {
+		scroll = 0;
+		LeftSc = false;
+	}
+	else {
+		LeftSc = true;
+	}
+
+	if (scroll >= width * 32 - WIN_WIDTH) {
+		scroll = width * 32 - WIN_WIDTH;
+		RightSc = false;
+	}
+	else {
+		RightSc = true;
+	}
 }
 
 bool Field::IsWallBlock(int x, int y)

@@ -44,6 +44,10 @@ public:
 	/// <param name="y">Yç¿ïW</param>
 	/// <returns></returns>
 	int CollisionUp(int x, int y);
+
+	void IsScroll();
+	bool GetLeftSc() { return LeftSc; }
+	bool GetRightSc() { return RightSc; }
 private:
 	int hImage;
 	int background;
@@ -54,4 +58,6 @@ private:
 	int width;
 	int height;
 	int sousa;
+	int scroll;
+	bool LeftSc, RightSc;
 };
