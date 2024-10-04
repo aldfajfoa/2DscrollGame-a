@@ -5,7 +5,7 @@
 #include "Field.h"
 
 namespace {
-	const float MOVE_SPEED = 0.5f;
+	const float MOVE_SPEED = 3.0f;
 	const float GROUND = 400.0f;
 	const float JUMP_HEIGHT = 64.0f * 2.0f;
 	const float GRAVITY = 9.8f / 60.0f;
@@ -30,6 +30,14 @@ void Stone::Update()
 
 	Field* pField = GetParent()->FindGameObject<Field>();
 
+	int push = pField->CollisionRight(transform_.position_.x + 30, transform_.position_.y + 20);
+
+	if (push > 1)
+	{
+		int tmp = transform_.position_.x;
+		transform_.position_.x -= tmp % 32/4;
+	}
+
 	if (pField != nullptr)
 	{
 		int push = pField->CollisionDown(transform_.position_.x + 17, transform_.position_.y + 20);
@@ -37,7 +45,7 @@ void Stone::Update()
 		if (push > 1)
 		{
 			transform_.position_.y -= push;
-			transform_.position_.x -= push - 2;
+			//transform_.position_.x -= push - 2;
 			jumpSpeed = 0.0f;
 			onGround = true;
 		}
@@ -45,7 +53,7 @@ void Stone::Update()
 
 	if (onGround == false)
 	{
-		transform_.position_.x += 3.0f;
+		transform_.position_.x += MOVE_SPEED;
 		transform_.position_.y -= sqrtf(2 * GRAVITY * JUMP_HEIGHT);
 
 		if (pField != nullptr)
@@ -65,7 +73,7 @@ void Stone::Update()
 	if (timer == 2)
 	{
 		Player* pPlayer = GetParent()->FindGameObject<Player>();
-		pPlayer->SetPosition(transform_.position_.x, transform_.position_.y - 20);
+		pPlayer->SetPosition(transform_.position_.x-40, transform_.position_.y - 20);
 	}
 
 	jumpSpeed += GRAVITY;
