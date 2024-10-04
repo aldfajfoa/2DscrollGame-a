@@ -39,9 +39,9 @@ void Stone::Update()
 		transform_.position_.x -= tmp % 32/10;
 	}
 
-	int push = pField->CollisionLeft(transform_.position_.x-25, transform_.position_.y + 20);
+	int push = pField->CollisionLeft(transform_.position_.x, transform_.position_.y + 20);
 
-	if (push < 1)
+	if (push > 1)
 	{
 		int tmp = transform_.position_.x;
 		transform_.position_.x += tmp % 32 / 10;
