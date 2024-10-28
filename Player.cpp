@@ -56,7 +56,7 @@ void Player::Update()
 	tmpPosx = transform_.position_.x;
 	tmpPosy = transform_.position_.y;
 
-	Field* pField = GetParent()->FindGameObject<Field>();
+	field = GetParent()->FindGameObject<Field>();
 	Stone* st = Instantiate<Stone>(GetParent());
 
 	counter -= 1;
@@ -185,10 +185,8 @@ void Player::Update()
 	}
 
 	//ここでカメラ位置の調整
-	Camera* cam = GetParent()->FindGameObject<Camera>();
+	cam = GetParent()->FindGameObject<Camera>();
 	int x = (int)transform_.position_.x - cam->GetValue();
-
-	Field* field = GetParent()->FindGameObject<Field>();
 	
 	if (field->GetRightSc()) {
 		if (x > 600) {
@@ -221,9 +219,14 @@ void Player::Update()
 		SetDrawBlendMode(DX_BLENDMODE_ALPHA, transparency + 500);
 	}
 
-	if (transform_.position_.x <= 1)
+	if (transform_.position_.x <= 0)
 	{
 		transform_.position_.x = 0;
+	}
+
+	if (transform_.position_.x >= field->GetWidth()*32)
+	{
+		transform_.position_.x = field->GetWidth() * 32;
 	}
 }
 
@@ -233,13 +236,12 @@ void Player::Draw()
 
 	int x = (int)transform_.position_.x;
 	int y = (int)transform_.position_.y;
-	Camera* cam = GetParent()->FindGameObject<Camera>();
-
+	/*cam = GetParent()->FindGameObject<Camera>();
 	if (cam != nullptr)
 	{
 		x -= cam->GetValue();
-	}
-	DrawRectGraph(x, y, animFrame * P_SIZE.w, P_SIZE.h*2, 80, 88, hImage, TRUE,ReversX);
+	}*/
+	DrawRectGraph(x-field->Getscroll(), y, animFrame * P_SIZE.w, P_SIZE.h * 2, 80, 88, hImage, TRUE, ReversX);
 }
 
 //プレイヤーのポジション
@@ -302,12 +304,6 @@ bool Player::MovePlayer()
 		ReversX = false;
 		transform_.position_.x += MOVE_SPEED;
 		return true;
-		/*int hitX = transform_.position_.x + 65;
-		int hitY = transform_.position_.y + 60;
-		if (pField != nullptr) {
-			int push = pField->CollisionRight(hitX, hitY);
-			transform_.position_.x -= push;
-		}*/
 	}
 	else if (CheckHitKey(KEY_INPUT_A))//後退
 	{

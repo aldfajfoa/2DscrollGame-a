@@ -7,12 +7,12 @@
 #include "Gool.h"
 #include "KanBan1.h"
 #include "Stone.h"
+#include "Lever.h"
 #include "Engine/CsvReader.h"
 
 
-
 Field::Field(GameObject* scene)
-	:GameObject(scene)
+	:GameObject(scene,"Field")
 {
 	hImage = LoadGraph("Assets/bgchar.png");
 	background = LoadGraph("Assets/mori.jpg");
@@ -21,6 +21,7 @@ Field::Field(GameObject* scene)
 	assert(hImage > 0);
 	assert(background > 0);
 	Map = nullptr;
+	scroll = 0;
 }
 
 Field::~Field()
@@ -41,7 +42,7 @@ void Field::Reset()
 		Map = nullptr;
 	}
 	CsvReader csv;//データを読むクラスfのインスタンスを作成
-	bool ret = csv.Load("Assets/stage1.csv");
+	bool ret = csv.Load("Assets/stageT2.csv");
 	assert(ret);
 	width = csv.GetWidth(0);
 	height = csv.GetHeight();
@@ -91,10 +92,15 @@ void Field::Reset()
 				Gools->SetPosition(w * 32, h * 32);
 			}
 			break;
-			case 4://Gool
+			case 4:
 			{
 				KanBan1* k1 = Instantiate<KanBan1>(GetParent());
 				k1->SetPosition(w * 32, h * 32);
+			}
+			case 5://Lever
+			{
+				Lever* lever = Instantiate<Lever>(GetParent());
+				lever->SetPosition(w * 32, h * 32);
 			}
 			break;
 			}
@@ -105,20 +111,20 @@ void Field::Reset()
 void Field::Update()
 {
 	if (CheckHitKey(KEY_INPUT_R))
+	{
 		Reset();
+	}
 }
 
 void Field::Draw()
 {
 	DrawGraph(0,0, background, TRUE);
-
 	DrawGraph(0, 0, stone, TRUE);
-
 	DrawGraph(0, 50, sousa, TRUE);
 
 	scroll = 0;
-	Camera* cam = GetParent()->FindGameObject<Camera>();
-	if (cam != nullptr) 
+	cam = GetParent()->FindGameObject<Camera>();
+	if (cam != nullptr)
 	{
 		scroll = cam->GetValue();
 	}
@@ -130,7 +136,7 @@ void Field::Draw()
 		for (int x = 0; x < width; x++) 
 		{
 			int chip = Map[y*width+x];
-			DrawRectGraph(x*32-scroll, y*32, 32 * (chip % 16), 32 * (chip / 16), 32, 32, hImage, TRUE);
+			DrawRectGraph((x*32)-scroll, y*32, 32*(chip % 16), 32*(chip / 16), 32,32, hImage, TRUE);
 		}
 	}
 }

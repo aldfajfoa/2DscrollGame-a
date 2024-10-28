@@ -1,5 +1,8 @@
 #pragma once
 #include "Engine/GameObject.h"
+#include "Field.h"
+class Camera;
+
 class Gool :
     public GameObject
 {
@@ -21,6 +24,8 @@ public:
 
 	void Reset();
 private:
+	//Field* field;
+	Camera* cam;
 	bool prevSpaceKey;
 	float jumpSpeed;
 	int counter;

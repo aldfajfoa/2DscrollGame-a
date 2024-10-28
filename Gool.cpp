@@ -13,8 +13,6 @@ Gool::Gool(GameObject* scene)
 {
 	hImage = LoadGraph("Assets/hata.png");
 	assert(hImage > 0);
-	transform_.position_.x = 800.0f;
-	transform_.position_.y = 500.0f;
 	counter = 0;
 }
 
@@ -28,9 +26,8 @@ Gool::~Gool()
 
 void Gool::Update()
 {
-
 	int x = (int)transform_.position_.x;
-	Camera* cam = GetParent()->FindGameObject<Camera>();
+	cam = GetParent()->FindGameObject<Camera>();
 	if (cam != nullptr) {
 		x -= cam->GetValue();
 	}
@@ -65,14 +62,16 @@ void Gool::Update()
 
 void Gool::Draw()
 {
+	Field* field = GetParent()->FindGameObject<Field>();
+
 	int x = (int)transform_.position_.x;
 	int y = (int)transform_.position_.y;
-	Camera* cam = GetParent()->FindGameObject<Camera>();
+	/*cam = GetParent()->FindGameObject<Camera>();
 	if (cam != nullptr) {
 		x -= cam->GetValue();
-	}
+	}*/
 
-	DrawGraph(x, y, hImage, TRUE);
+	DrawGraph(x-field->Getscroll(), y, hImage, TRUE);
 
 	//DrawCircle(x + 100.0f, y + 100.0f, 200.0f, GetColor(255, 0, 0),0);
 }

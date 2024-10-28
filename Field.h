@@ -1,5 +1,6 @@
 #pragma once
 #include "Engine/GameObject.h"
+class Camera;
 
 /// <summary>
 /// 地面（プレイフィールド）
@@ -55,7 +56,11 @@ public:
 
 	bool EnemyCollisionRight(int i);
 	bool EnemyCollisionLeft(int i);
+	void SetScroll(int scroll_) { scroll = scroll_; }
+	int GetWidth() { return width; }
+	int Getscroll() { return scroll; }
 private:
+	Camera* cam;
 	int hImage;
 	int background;
 	int stone;

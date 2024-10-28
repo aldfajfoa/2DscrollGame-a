@@ -120,12 +120,12 @@ void Enemy1::Draw()
 {
 	int x = (int)transform_.position_.x;
 	int y = (int)transform_.position_.y;
-	Camera* cam = GetParent()->FindGameObject<Camera>();
+	/*Camera* cam = GetParent()->FindGameObject<Camera>();
 	if (cam != nullptr) {
 		x -= cam->GetValue();
-	}
-
-	DrawRectGraph(x, y, 0, animFrame * 64, 64, 64, hImage, TRUE,IsReverse);
+	}*/
+	Field* field = GetParent()->FindGameObject<Field>();
+	DrawRectGraph(x-field->Getscroll(), y, 0, animFrame * 64, 64, 64, hImage, TRUE, IsReverse);
 	
 	//DrawCircle(x + 32.0f, y + 32.0f, 24.0f, GetColor(255, 0, 0),0);
 }

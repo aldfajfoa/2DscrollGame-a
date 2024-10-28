@@ -1,5 +1,7 @@
 #pragma once
 #include "Engine/GameObject.h"
+class Camera;
+class Field;
 
 /// <summary>
 /// プレイヤーキャラ
@@ -32,6 +34,8 @@ private:
 	int kazu;
 
 	GameObject* sceneTop;
+	Camera* cam;
+	Field* field;
 	bool prevSpaceKey;
 	float jumpSpeed;
 	bool onGround;

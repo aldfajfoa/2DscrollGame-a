@@ -36,7 +36,7 @@ void Stone::Update()
 
 	pField = GetParent()->FindGameObject<Field>();
 
-	int push = pField->CollisionRight(transform_.position_.x + 25, transform_.position_.y + 19);
+	int push = pField->CollisionRight(transform_.position_.x + 25, transform_.position_.y + 18);
 
 	if (push > 1)
 	{
@@ -49,7 +49,7 @@ void Stone::Update()
 		colR = false;
 	}
 
-	push = pField->CollisionLeft(transform_.position_.x, transform_.position_.y + 19);
+	push = pField->CollisionLeft(transform_.position_.x, transform_.position_.y + 18);
 
 	if (push > 1)
 	{
@@ -135,18 +135,19 @@ void Stone::Update()
 		Reset();
 	}
 
-	WarpStone();
+	WarpStone();//プレイヤーを石の位置に移動させる
 }
 
 void Stone::Draw()
 {
 	int x = (int)transform_.position_.x;
 	int y = (int)transform_.position_.y;
-	Camera* cam = GetParent()->FindGameObject<Camera>();
+
+	/*Camera* cam = GetParent()->FindGameObject<Camera>();
 	if (cam != nullptr) {
-		x -= cam->GetValue();
-	}
-	DrawGraph(x, y, hImage, TRUE);
+		//x -= cam->GetValue();
+	}*/
+	DrawGraph(x-pField->Getscroll(), y, hImage, TRUE);
 }
 
 void Stone::SetPosition(XMFLOAT3 pos)

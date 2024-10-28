@@ -82,6 +82,9 @@
     <ClCompile Include="KanBan1.cpp">
       <Filter>Stage</Filter>
     </ClCompile>
+    <ClCompile Include="Lever.cpp">
+      <Filter>Stage</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\GameObject.h">
@@ -142,6 +145,9 @@
       <Filter>Stage</Filter>
     </ClInclude>
     <ClInclude Include="KanBan1.h">
+      <Filter>Stage</Filter>
+    </ClInclude>
+    <ClInclude Include="Lever.h">
       <Filter>Stage</Filter>
     </ClInclude>
   </ItemGroup>

@@ -143,6 +143,7 @@
     <ClCompile Include="Gool.cpp" />
     <ClCompile Include="KanBan1.cpp" />
     <ClCompile Include="Enemy2.cpp" />
+    <ClCompile Include="Lever.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="Stone.cpp" />
     <ClCompile Include="TestScene.cpp" />
@@ -165,6 +166,7 @@
     <ClInclude Include="Gool.h" />
     <ClInclude Include="KanBan1.h" />
     <ClInclude Include="Enemy2.h" />
+    <ClInclude Include="Lever.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="Stone.h" />
     <ClInclude Include="TestScene.h" />
