@@ -29,7 +29,18 @@ public:
 	void ControlCollision();
 	void SetGround(float _ground) { Ground = _ground; }
 	bool MovePlayer();
+
+	bool IsActive() { return isAlive; }//isAlive‚ªtrue‚©‚Ç‚¤‚©
+	void DeActivateMe() { isAlive = false; }
+	void ActivateMe() { isAlive = true; }
+	void Setp_speed(float speed) { p_speed = speed; }
+	float GetMOVE_SPEED() { return MOVE_SPEED; }
+	float GetMOVE_SPEED2() { return MOVE_SPEED2; }
+
 private:
+	const float MOVE_SPEED = 2.0f;
+	const float MOVE_SPEED2 = 6.0f;
+
 	int hImage;
 	int kazu;
 
@@ -51,6 +62,8 @@ private:
 	int ceiling;
 	int Ground;
 	bool firstGround;
+	bool isAlive;
+	float p_speed;
 
 	enum State {
 		S_Walk=0,

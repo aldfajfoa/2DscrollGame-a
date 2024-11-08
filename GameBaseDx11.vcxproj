@@ -93,10 +93,10 @@
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
-      <AdditionalIncludeDirectories>D:\GE2A06\プロジェクトに追加すべきファイル_VC用;C:\Users\Masay\source\repos\プロジェクトに追加すべきファイル_VC用 1\プロジェクトに追加すべきファイル_VC用;D:\GE2A 21\code\プロジェクトに追加すべきファイル_VC用;D:\プロジェクトに追加すべきファイル_VC用;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\プロジェクトに追加すべきファイル_VC用;C:\Users\Masay\source\repos\プロジェクトに追加すべきファイル_VC用 1\プロジェクトに追加すべきファイル_VC用;D:\GE2A 21\code\プロジェクトに追加すべきファイル_VC用;D:\GE2A06\プロジェクトに追加すべきファイル_VC用;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
-      <AdditionalLibraryDirectories>D:\GE2A06\プロジェクトに追加すべきファイル_VC用;D:\プロジェクトに追加すべきファイル_VC用;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>C:\プロジェクトに追加すべきファイル_VC用;D:\GE2A06\プロジェクトに追加すべきファイル_VC用;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -145,6 +145,7 @@
     <ClCompile Include="Enemy2.cpp" />
     <ClCompile Include="Lever.cpp" />
     <ClCompile Include="Player.cpp" />
+    <ClCompile Include="SpeedStone.cpp" />
     <ClCompile Include="Stone.cpp" />
     <ClCompile Include="TestScene.cpp" />
     <ClCompile Include="TitleScene.cpp" />
@@ -168,6 +169,7 @@
     <ClInclude Include="Enemy2.h" />
     <ClInclude Include="Lever.h" />
     <ClInclude Include="Player.h" />
+    <ClInclude Include="SpeedStone.h" />
     <ClInclude Include="Stone.h" />
     <ClInclude Include="TestScene.h" />
     <ClInclude Include="TitleScene.h" />

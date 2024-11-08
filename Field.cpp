@@ -8,6 +8,7 @@
 #include "KanBan1.h"
 #include "Stone.h"
 #include "Lever.h"
+#include "SpeedStone.h"
 #include "Engine/CsvReader.h"
 
 
@@ -18,6 +19,7 @@ Field::Field(GameObject* scene)
 	background = LoadGraph("Assets/mori.jpg");
 	stone = LoadGraph("Assets/isi.png");
 	sousa = LoadGraph("Assets/sousa.png");
+	controll = LoadGraph("Assets/Controll.png");
 	assert(hImage > 0);
 	assert(background > 0);
 	Map = nullptr;
@@ -97,7 +99,13 @@ void Field::Reset()
 				KanBan1* k1 = Instantiate<KanBan1>(GetParent());
 				k1->SetPosition(w * 32, h * 32);
 			}
-			case 5://Lever
+			case 5://SpeedStone
+			{
+				SpeedStone* Ss = Instantiate<SpeedStone>(GetParent());
+				Ss->SetPosition(w * 32, h * 32);
+			}
+			break;
+			case 6://Lever
 			{
 				Lever* lever = Instantiate<Lever>(GetParent());
 				lever->SetPosition(w * 32, h * 32);
@@ -139,6 +147,8 @@ void Field::Draw()
 			DrawRectGraph((x*32)-scroll, y*32, 32*(chip % 16), 32*(chip / 16), 32,32, hImage, TRUE);
 		}
 	}
+
+	DrawGraph(WIN_WIDTH - 305, WIN_HEIGHT - 95, controll, TRUE);
 }
 
 int Field::CollisionRight(int x, int y)

@@ -70,6 +70,7 @@ private:
 	int width;
 	int height;
 	int sousa;
+	int controll;
 	int scroll;
 	bool LeftSc, RightSc;
 };

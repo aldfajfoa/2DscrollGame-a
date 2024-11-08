@@ -8,11 +8,11 @@
 #include "Enemy1.h"
 #include "Enemy2.h"
 #include "Gool.h"
+#include "SpeedStone.h"
 #include "TestScene.h"
 
 namespace {
 	const Size P_SIZE = { 80,88 };
-	const float MOVE_SPEED = 2.0f;
 	const float GROUND = 400.0f;
 	const float JUMP_HEIGHT = 64.0f * 4.0f;//ジャンプの高さ
 	const float GRAVITY = 9.8f / 60.0f;//重力加速度
@@ -32,12 +32,14 @@ Player::Player(GameObject* parent)
 	transform_.position_.y = GROUND;
 	jumpSpeed = 0.0f;
 	onGround = true;
+	isAlive = true;
 	animType = 0;
 	animFrame = 0;
 	frameCounter = 0;
 	state = S_Walk;
 	transparency = 0;
 	readyTimer = 1.5f;
+	p_speed = MOVE_SPEED;
 	Reset();
 }
 
@@ -184,6 +186,24 @@ void Player::Update()
 		}
 	}
 
+	//スピードストーンの当たり判定
+	std::list<SpeedStone*> pSs = GetParent()->FindGameObjects<SpeedStone>();
+	for (SpeedStone* pSs : pSs)
+	{
+		if (pSs->CollideCircle(transform_.position_.x + 32.0f, transform_.position_.y + 32.0f, 20.0f))
+		{
+			animType = 4;
+			animFrame = 0;
+			pSs->DeActivateMe();
+			this->DeActivateMe();
+
+			//state = S_Cry;
+			//scene->StartDead();
+			//SceneManager* pSceneManager = (SceneManager*)FindObject("SceneManager");
+			//pSceneManager->ChangeScene(SCENE_ID_GAMEOVER);
+		}
+	}
+
 	//ここでカメラ位置の調整
 	cam = GetParent()->FindGameObject<Camera>();
 	int x = (int)transform_.position_.x - cam->GetValue();
@@ -242,6 +262,11 @@ void Player::Draw()
 		x -= cam->GetValue();
 	}*/
 	DrawRectGraph(x-field->Getscroll(), y, animFrame * P_SIZE.w, P_SIZE.h * 2, 80, 88, hImage, TRUE, ReversX);
+
+	if (p_speed == 0)
+	{
+		DrawCircle(50, 50, 10, 255);
+	}
 }
 
 //プレイヤーのポジション
@@ -302,21 +327,15 @@ bool Player::MovePlayer()
 	if (CheckHitKey(KEY_INPUT_D))
 	{
 		ReversX = false;
-		transform_.position_.x += MOVE_SPEED;
+		transform_.position_.x += p_speed;
 		return true;
 	}
 	else if (CheckHitKey(KEY_INPUT_A))//後退
 	{
 		ReversX = true;
-		transform_.position_.x -= MOVE_SPEED;
+		transform_.position_.x -= p_speed;
 		return true;
 	}
-			/*int hitX = transform_.position_.x + 5;
-			int hitY = transform_.position_.y + 60;
-			if (pField != nullptr)
-			{
-				int push = (pField->CollisionLeft(hitX + 10, hitY)) / 12;
-				transform_.position_.x += push;
-			}*/
+
 	return false;
 }

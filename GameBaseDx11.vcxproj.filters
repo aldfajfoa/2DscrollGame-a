@@ -85,6 +85,9 @@
     <ClCompile Include="Lever.cpp">
       <Filter>Stage</Filter>
     </ClCompile>
+    <ClCompile Include="SpeedStone.cpp">
+      <Filter>Player</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\GameObject.h">
@@ -149,6 +152,9 @@
     </ClInclude>
     <ClInclude Include="Lever.h">
       <Filter>Stage</Filter>
+    </ClInclude>
+    <ClInclude Include="SpeedStone.h">
+      <Filter>Player</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
