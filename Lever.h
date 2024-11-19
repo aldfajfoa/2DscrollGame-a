@@ -1,6 +1,9 @@
 #pragma once
 #include "Engine/GameObject.h"
 class Player;
+class LeverMaster;
+class LeverBrock;
+class Field;
 
 class Lever :
     public GameObject
@@ -8,8 +11,11 @@ class Lever :
 	int hImage;
 	bool ReversX;
 	Player* p;
-	//‰~‚Ì“–‚½‚è”»’è
-	bool CollideCircle(float x, float y, float r);
+	Field* fi;
+	LeverMaster* lMas;
+	int Lscroll;
+	int LeverID;
+	
 public:
 	Lever(GameObject* scene);
 	void Initialize() override;
@@ -17,5 +23,8 @@ public:
 	void Draw() override;
 	void Release() override;
 	void SetPosition(int x, int y);
+	void ReversXfalse() { ReversX =false; }
+	void DestroyLBrock();
+	void SetLeverID(int ID) { LeverID = ID; }
 };
 

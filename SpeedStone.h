@@ -45,5 +45,6 @@ private:
     int tmpPosx, tmpPosy;
     bool isAlive;
     Player* p;
+    int t;
 };
 

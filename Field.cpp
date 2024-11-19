@@ -7,7 +7,7 @@
 #include "Gool.h"
 #include "KanBan1.h"
 #include "Stone.h"
-#include "Lever.h"
+#include "LeverMaster.h"
 #include "SpeedStone.h"
 #include "Engine/CsvReader.h"
 
@@ -34,6 +34,7 @@ Field::~Field()
 	}
 	if (Map != nullptr) {
 		delete[] Map; //Mapは配列
+		delete[] Mapbottom;
 	}
 }
 
@@ -42,6 +43,8 @@ void Field::Reset()
 	if (Map != nullptr) {
 		delete[] Map;
 		Map = nullptr;
+		delete[] Mapbottom;
+		Mapbottom = nullptr;
 	}
 	CsvReader csv;//データを読むクラスfのインスタンスを作成
 	bool ret = csv.Load("Assets/stageT2.csv");
@@ -49,6 +52,7 @@ void Field::Reset()
 	width = csv.GetWidth(0);
 	height = csv.GetHeight();
 	Map = new int[width * height];//C言語での動的二次元配列の取り方
+	Mapbottom = new int[width * height];
 	
 	for (int h = 0; h < height; h++) 
 	{
@@ -59,9 +63,18 @@ void Field::Reset()
 		}
 		for (int w = 0; w < width; w++)
 		{
-			Map[h*width+w] = csv.GetInt(w, h);
+			Map[h * width + w] = csv.GetInt(w, h);
 		}
 	}
+
+	for (int h = height + 1; h <= height*2; h++)
+	{
+		for (int w = 0; w < width; w++)
+		{
+			Mapbottom[h * width + w] = csv.GetInt(w, h);
+		}
+	}
+
 	//Mapデータの中で0があれば、Playerの座標を0の位置にする
 	for (int h = 0; h < height; h++) 
 	{
@@ -99,16 +112,41 @@ void Field::Reset()
 				KanBan1* k1 = Instantiate<KanBan1>(GetParent());
 				k1->SetPosition(w * 32, h * 32);
 			}
+			break;
 			case 5://SpeedStone
 			{
 				SpeedStone* Ss = Instantiate<SpeedStone>(GetParent());
 				Ss->SetPosition(w * 32, h * 32);
 			}
 			break;
-			case 6://Lever
+			case 600:
+			case 601:
+			case 602:
+			case 603:
+			case 604:
 			{
-				Lever* lever = Instantiate<Lever>(GetParent());
-				lever->SetPosition(w * 32, h * 32);
+				LeverMaster* leMas = GetParent()->FindGameObject<LeverMaster>();
+				leMas->SetLeverPos(csv.GetInt(w, h + height + 1), w * 32, h * 32);
+			}
+			break;
+			}
+		}
+	}
+
+	for (int h = 0; h < height; h++)
+	{
+		for (int w = 0; w < width; w++)
+		{
+			switch (csv.GetInt(w, h))
+			{
+			case 610:
+			case 611:
+			case 612:
+			case 613:
+			case 614:
+			{
+				LeverMaster* lbMas = GetParent()->FindGameObject<LeverMaster>();
+				lbMas->birthLeverBrock(w * 32, h * 32, (csv.GetInt(w, h)) - 610);
 			}
 			break;
 			}
@@ -148,7 +186,7 @@ void Field::Draw()
 		}
 	}
 
-	DrawGraph(WIN_WIDTH - 305, WIN_HEIGHT - 95, controll, TRUE);
+	//DrawGraph(WIN_WIDTH - 305, WIN_HEIGHT - 95, controll, TRUE);
 }
 
 int Field::CollisionRight(int x, int y)
@@ -195,6 +233,50 @@ int Field::CollisionUp(int x, int y)
 		return 0;
 }
 
+int Field::CollisionRight2(int x, int y)
+{
+	if (IsWallBlock2(x, y))
+	{
+		//当たっているので、めり込んだ量を返す
+		return x % 32 + 1;
+	}
+	else
+		return 0;
+}
+
+int Field::CollisionLeft2(int x, int y)
+{
+	if (IsWallBlock2(x, y))
+	{
+		//当たっているので、めり込んだ量を返す
+		return x % 32 - 1;
+	}
+	else
+		return 0;
+}
+
+int Field::CollisionDown2(int x, int y)
+{
+	if (IsWallBlock2(x, y))
+	{
+		//当たっているので、めり込んだ量を返す
+		return y % 32 + 1;
+	}
+	else
+		return 0;
+}
+
+int Field::CollisionUp2(int x, int y)
+{
+	if (IsWallBlock2(x, y))
+	{
+		//当たっているので、めり込んだ量を返す
+		return y % 32 + 1;
+	}
+	else
+		return 0;
+}
+
 void Field::IsScroll()
 {
 	if (scroll <= 0) {
@@ -228,6 +310,11 @@ bool Field::IsCollisionRight(int i)
 	case 33:
 	case 34:
 	case 35:
+	case 610:
+	case 611:
+	case 612:
+	case 613:
+	case 614:
 		return true;
 	}
 	return false;
@@ -247,6 +334,11 @@ bool Field::IsCollisionLeft(int i)
 	case 33:
 	case 34:
 	case 35:
+	case 610:
+	case 611:
+	case 612:
+	case 613:
+	case 614:
 		return true;
 	}
 	return false;
@@ -266,6 +358,11 @@ bool Field::IsCollisionUp(int i)
 	case 33:
 	case 34:
 	case 35:
+	case 610:
+	case 611:
+	case 612:
+	case 613:
+	case 614:
 		return true;
 	}
 	return false;
@@ -285,6 +382,11 @@ bool Field::IsCollisionDown(int i)
 	case 33:
 	case 34:
 	case 35:
+	case 610:
+	case 611:
+	case 612:
+	case 613:
+	case 614:
 		return true;
 	}
 	return false;
@@ -328,12 +430,20 @@ bool Field::EnemyCollisionLeft(int i)
 	return false;
 }
 
+void Field::ChangeChip(int x, int y,int changeNum)
+{
+	y;
+	x;
+	changeNum;
+	Map[y * width + x] = changeNum;
+}
+
 
 bool Field::IsWallBlock(int x, int y)
 {
 	int chipX = x / 32;
 	int chipY = y / 32;
-	switch (Map[chipY*width+chipX]) 
+	switch (Map[chipY * width + chipX])
 	{
 	case 16:
 	case 17:
@@ -343,6 +453,23 @@ bool Field::IsWallBlock(int x, int y)
 	case 33:
 	case 34:
 	case 35:
+		return true;
+	}
+	return false;
+}
+
+bool Field::IsWallBlock2(int x, int y)
+{
+	int chipX = x / 32;
+	int chipY = y / 32;
+	
+	switch (Mapbottom[chipY * width + chipX])
+	{
+	case 610:
+	case 611:
+	case 612:
+	case 613:
+	case 614:
 		return true;
 	}
 	return false;

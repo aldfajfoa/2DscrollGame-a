@@ -46,6 +46,11 @@ public:
 	/// <returns></returns>
 	int CollisionUp(int x, int y);
 
+	int CollisionRight2(int x, int y);
+	int CollisionLeft2(int x, int y);
+	int CollisionDown2(int x, int y);
+	int CollisionUp2(int x, int y);
+
 	void IsScroll();
 	bool GetLeftSc() { return LeftSc; }
 	bool GetRightSc() { return RightSc; }
@@ -58,7 +63,9 @@ public:
 	bool EnemyCollisionLeft(int i);
 	void SetScroll(int scroll_) { scroll = scroll_; }
 	int GetWidth() { return width; }
+	int GetHeight() { return height; }
 	int Getscroll() { return scroll; }
+	void ChangeChip(int x, int y, int changeNum);
 private:
 	Camera* cam;
 	int hImage;
@@ -66,7 +73,9 @@ private:
 	int stone;
 
 	bool IsWallBlock(int x, int y);
+	bool IsWallBlock2(int x, int y);
 	int* Map;
+	int* Mapbottom;//マップの下部(敵とか配置してる方)
 	int width;
 	int height;
 	int sousa;

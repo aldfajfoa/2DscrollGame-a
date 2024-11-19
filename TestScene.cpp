@@ -4,6 +4,7 @@
 #include "Field.h"
 #include "Camera.h"
 #include "Banner.h"
+#include "LeverMaster.h"
 #include "Engine/SceneManager.h"
 
 //コンストラクタ
@@ -17,6 +18,7 @@ void TestScene::Initialize()
 {
 	Instantiate<Camera>(this);
 	Field* pField = Instantiate<Field>(this);
+	Instantiate<LeverMaster>(this);
 	Instantiate<Player>(this);
 	pField->Reset();
 	Instantiate<Banner>(this);

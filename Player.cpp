@@ -10,6 +10,8 @@
 #include "Gool.h"
 #include "SpeedStone.h"
 #include "TestScene.h"
+#include "LeverMaster.h"
+#include "LeverBrock.h"
 
 namespace {
 	const Size P_SIZE = { 80,88 };
@@ -18,12 +20,11 @@ namespace {
 	const float GRAVITY = 9.8f / 60.0f;//重力加速度
 	const int MAX_STONE = 20; //小石を投げれる最大数
 	float STONE_NUMBER = 940;
-	//const float INITIALVELOCITY = 18.0f;
 }
 
 
 Player::Player(GameObject* parent) 
-	: GameObject(sceneTop), counter(0), count(0), rcount(0), firstGround(true)
+	:GameObject(sceneTop,"Player"), counter(0), count(0), rcount(0), firstGround(true)
 {
 	hImage = LoadGraph("Assets/player2.png");
 	kazu = LoadGraph("Assets/suji.png");
@@ -60,9 +61,9 @@ void Player::Update()
 
 	field = GetParent()->FindGameObject<Field>();
 	Stone* st = Instantiate<Stone>(GetParent());
+	lMas = GetParent()->FindGameObject<LeverMaster>();
 
 	counter -= 1;
-	//rcount += 1;
 
 	if (state == S_Cry)
 	{
@@ -96,21 +97,6 @@ void Player::Update()
 
 	ControlCollision();
 
-	/*if (pField != nullptr)
-	{
-		//(50,64)と(14,64)も見る
-		int pushR = pField->CollisionDown(transform_.position_.x + 80, transform_.position_.y + 80);
-		int pushL = pField->CollisionDown(transform_.position_.x + 14, transform_.position_.y + 80);
-		int push = max(pushR, pushL);//２つの足元のめり込みの大きい方
-		if (push >= 1) {
-			transform_.position_.y -= push - 1;
-			jumpSpeed = 0.0f;
-			onGround = true;
-		}
-		else {
-			onGround = false;
-		}
-	}*/
 	if (transform_.position_.y > Ground) {
 		transform_.position_.y = Ground;
 		jumpSpeed = 0.0f;
@@ -119,7 +105,6 @@ void Player::Update()
 	//石を投げる
 	if (count == MAX_STONE)
 	{
-
 	}
 	else
 	{
@@ -195,13 +180,13 @@ void Player::Update()
 			animType = 4;
 			animFrame = 0;
 			pSs->DeActivateMe();
-			this->DeActivateMe();
-
-			//state = S_Cry;
-			//scene->StartDead();
-			//SceneManager* pSceneManager = (SceneManager*)FindObject("SceneManager");
-			//pSceneManager->ChangeScene(SCENE_ID_GAMEOVER);
 		}
+	}
+
+	for (int i = 0; i < lMas->GetlBrocks().size(); i++)
+	{
+		CollisionLBrock(lMas->GetlBrocks()[i]->GetPosition().x, 
+			            lMas->GetlBrocks()[i]->GetPosition().y);
 	}
 
 	//ここでカメラ位置の調整
@@ -256,17 +241,8 @@ void Player::Draw()
 
 	int x = (int)transform_.position_.x;
 	int y = (int)transform_.position_.y;
-	/*cam = GetParent()->FindGameObject<Camera>();
-	if (cam != nullptr)
-	{
-		x -= cam->GetValue();
-	}*/
+	
 	DrawRectGraph(x-field->Getscroll(), y, animFrame * P_SIZE.w, P_SIZE.h * 2, 80, 88, hImage, TRUE, ReversX);
-
-	if (p_speed == 0)
-	{
-		DrawCircle(50, 50, 10, 255);
-	}
 }
 
 //プレイヤーのポジション
@@ -323,8 +299,7 @@ void Player::ControlCollision()
 
 bool Player::MovePlayer()
 {
-	//前進
-	if (CheckHitKey(KEY_INPUT_D))
+	if (CheckHitKey(KEY_INPUT_D))//前進
 	{
 		ReversX = false;
 		transform_.position_.x += p_speed;
@@ -338,4 +313,35 @@ bool Player::MovePlayer()
 	}
 
 	return false;
+}
+
+bool Player::CollideCircle(float x, float y, float r)
+{
+	float myCenterX = transform_.position_.x + (P_SIZE.w / 2);
+	float myCenterY = transform_.position_.y + (P_SIZE.h / 2);
+	float myR = 32.0f;
+	float dx = myCenterX - x;
+	float dy = myCenterY - y;
+	if ((dx * dx + dy * dy) < (r + myR) * (r + myR))
+		return true;
+	return false;
+}
+
+void Player::CollisionLBrock(int lx, int ly)
+{	
+	if (field != nullptr)
+	{
+		//(50,64)と(14,64)も見る
+		int pushR = field->CollisionDown2(transform_.position_.x + 80, transform_.position_.y + 88);
+		int pushL = field->CollisionDown2(transform_.position_.x + 14, transform_.position_.y + 88);
+		int push = max(pushR, pushL);//２つの足元のめり込みの大きい方
+		if (push >= 1) {
+			transform_.position_.y -= push - 1;
+			jumpSpeed = 0.0f;
+			onGround = true;
+		}
+		else {
+			onGround = false;
+		}
+	}
 }

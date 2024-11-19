@@ -2,6 +2,7 @@
 #include "Engine/GameObject.h"
 class Camera;
 class Field;
+class LeverMaster;
 
 /// <summary>
 /// プレイヤーキャラ
@@ -36,6 +37,14 @@ public:
 	void Setp_speed(float speed) { p_speed = speed; }
 	float GetMOVE_SPEED() { return MOVE_SPEED; }
 	float GetMOVE_SPEED2() { return MOVE_SPEED2; }
+	bool CollideCircle(float x, float y, float r);
+
+	/// <summary>
+	/// LeverBrockとの当たり判定
+	/// </summary>
+	/// <param name="lx">LeverBrockのx座標</param>
+	/// <param name="ly">LeverBrockのy座標</param>
+	void CollisionLBrock(int lx,int ly);
 
 private:
 	const float MOVE_SPEED = 2.0f;
@@ -47,6 +56,7 @@ private:
 	GameObject* sceneTop;
 	Camera* cam;
 	Field* field;
+	LeverMaster* lMas;
 	bool prevSpaceKey;
 	float jumpSpeed;
 	bool onGround;

@@ -4,7 +4,7 @@ class Camera :
     public GameObject
 {
 public:
-    Camera(GameObject* parent):GameObject(parent) { value = 0; }
+    Camera(GameObject* parent):GameObject(parent,"Camera") { value = 0; }
     ~Camera(){}
 
     void SetValue(int v) { value = v; }

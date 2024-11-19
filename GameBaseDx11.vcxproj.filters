@@ -88,6 +88,12 @@
     <ClCompile Include="SpeedStone.cpp">
       <Filter>Player</Filter>
     </ClCompile>
+    <ClCompile Include="LeverMaster.cpp">
+      <Filter>Stage</Filter>
+    </ClCompile>
+    <ClCompile Include="LeverBrock.cpp">
+      <Filter>Stage</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\GameObject.h">
@@ -155,6 +161,12 @@
     </ClInclude>
     <ClInclude Include="SpeedStone.h">
       <Filter>Player</Filter>
+    </ClInclude>
+    <ClInclude Include="LeverMaster.h">
+      <Filter>Stage</Filter>
+    </ClInclude>
+    <ClInclude Include="LeverBrock.h">
+      <Filter>Stage</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

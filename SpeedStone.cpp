@@ -96,8 +96,21 @@ void SpeedStone::Update()
 		Reset();
 	}
 
+
 	if (isAlive == false)
-		KillStone();
+	{
+		if (t <= 115)
+		{
+			p->Setp_speed(p->GetMOVE_SPEED2());
+			t++ ;
+		}
+		else
+		{
+			p->Setp_speed(p->GetMOVE_SPEED());
+			t = 0;
+			KillMe();
+		}
+	}
 }
 
 void SpeedStone::Draw()
@@ -112,10 +125,6 @@ void SpeedStone::Draw()
 		}
 
 		DrawRectGraph(x, y, animFrame * 48, 48, 48, 40, hImage, TRUE, IsReverse);
-	}
-	else
-	{
-
 	}
 }
 
@@ -142,17 +151,7 @@ void SpeedStone::Reset()
 	KillMe();
 }
 
-void SpeedStone::KillStone()
-{
-	static float t = 0;
-	if (t <= 200)
-	{
-		p->Setp_speed(p->GetMOVE_SPEED2());
-		t++;
-	}
-	else
-	{
-		p->Setp_speed(0);
-		KillMe();
-	}
-}
+//void SpeedStone::KillStone()
+//{
+	
+//}
