@@ -183,12 +183,6 @@ void Player::Update()
 		}
 	}
 
-	for (int i = 0; i < lMas->GetlBrocks().size(); i++)
-	{
-		CollisionLBrock(lMas->GetlBrocks()[i]->GetPosition().x, 
-			            lMas->GetlBrocks()[i]->GetPosition().y);
-	}
-
 	//‚±‚±‚ÅƒJƒƒ‰ˆÊ’u‚Ì’²®
 	cam = GetParent()->FindGameObject<Camera>();
 	int x = (int)transform_.position_.x - cam->GetValue();
@@ -325,23 +319,4 @@ bool Player::CollideCircle(float x, float y, float r)
 	if ((dx * dx + dy * dy) < (r + myR) * (r + myR))
 		return true;
 	return false;
-}
-
-void Player::CollisionLBrock(int lx, int ly)
-{	
-	if (field != nullptr)
-	{
-		//(50,64)‚Æ(14,64)‚àŒ©‚é
-		int pushR = field->CollisionDown2(transform_.position_.x + 80, transform_.position_.y + 88);
-		int pushL = field->CollisionDown2(transform_.position_.x + 14, transform_.position_.y + 88);
-		int push = max(pushR, pushL);//‚Q‚Â‚Ì‘«Œ³‚Ì‚ß‚èž‚Ý‚Ì‘å‚«‚¢•û
-		if (push >= 1) {
-			transform_.position_.y -= push - 1;
-			jumpSpeed = 0.0f;
-			onGround = true;
-		}
-		else {
-			onGround = false;
-		}
-	}
 }

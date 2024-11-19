@@ -34,7 +34,6 @@ Field::~Field()
 	}
 	if (Map != nullptr) {
 		delete[] Map; //Mapは配列
-		delete[] Mapbottom;
 	}
 }
 
@@ -43,8 +42,6 @@ void Field::Reset()
 	if (Map != nullptr) {
 		delete[] Map;
 		Map = nullptr;
-		delete[] Mapbottom;
-		Mapbottom = nullptr;
 	}
 	CsvReader csv;//データを読むクラスfのインスタンスを作成
 	bool ret = csv.Load("Assets/stageT2.csv");
@@ -52,7 +49,6 @@ void Field::Reset()
 	width = csv.GetWidth(0);
 	height = csv.GetHeight();
 	Map = new int[width * height];//C言語での動的二次元配列の取り方
-	Mapbottom = new int[width * height];
 	
 	for (int h = 0; h < height; h++) 
 	{
@@ -64,14 +60,6 @@ void Field::Reset()
 		for (int w = 0; w < width; w++)
 		{
 			Map[h * width + w] = csv.GetInt(w, h);
-		}
-	}
-
-	for (int h = height + 1; h <= height*2; h++)
-	{
-		for (int w = 0; w < width; w++)
-		{
-			Mapbottom[h * width + w] = csv.GetInt(w, h);
 		}
 	}
 
@@ -225,50 +213,6 @@ int Field::CollisionDown(int x, int y)
 int Field::CollisionUp(int x, int y)
 {
 	if (IsWallBlock(x, y)) 
-	{
-		//当たっているので、めり込んだ量を返す
-		return y % 32 + 1;
-	}
-	else
-		return 0;
-}
-
-int Field::CollisionRight2(int x, int y)
-{
-	if (IsWallBlock2(x, y))
-	{
-		//当たっているので、めり込んだ量を返す
-		return x % 32 + 1;
-	}
-	else
-		return 0;
-}
-
-int Field::CollisionLeft2(int x, int y)
-{
-	if (IsWallBlock2(x, y))
-	{
-		//当たっているので、めり込んだ量を返す
-		return x % 32 - 1;
-	}
-	else
-		return 0;
-}
-
-int Field::CollisionDown2(int x, int y)
-{
-	if (IsWallBlock2(x, y))
-	{
-		//当たっているので、めり込んだ量を返す
-		return y % 32 + 1;
-	}
-	else
-		return 0;
-}
-
-int Field::CollisionUp2(int x, int y)
-{
-	if (IsWallBlock2(x, y))
 	{
 		//当たっているので、めり込んだ量を返す
 		return y % 32 + 1;
@@ -458,19 +402,3 @@ bool Field::IsWallBlock(int x, int y)
 	return false;
 }
 
-bool Field::IsWallBlock2(int x, int y)
-{
-	int chipX = x / 32;
-	int chipY = y / 32;
-	
-	switch (Mapbottom[chipY * width + chipX])
-	{
-	case 610:
-	case 611:
-	case 612:
-	case 613:
-	case 614:
-		return true;
-	}
-	return false;
-}

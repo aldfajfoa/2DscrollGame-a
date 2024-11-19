@@ -39,13 +39,6 @@ public:
 	float GetMOVE_SPEED2() { return MOVE_SPEED2; }
 	bool CollideCircle(float x, float y, float r);
 
-	/// <summary>
-	/// LeverBrock‚Æ‚Ì“–‚½‚è”»’è
-	/// </summary>
-	/// <param name="lx">LeverBrock‚ÌxÀ•W</param>
-	/// <param name="ly">LeverBrock‚ÌyÀ•W</param>
-	void CollisionLBrock(int lx,int ly);
-
 private:
 	const float MOVE_SPEED = 2.0f;
 	const float MOVE_SPEED2 = 6.0f;
