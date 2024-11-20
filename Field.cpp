@@ -397,6 +397,11 @@ bool Field::IsWallBlock(int x, int y)
 	case 33:
 	case 34:
 	case 35:
+	case 610:
+	case 611:
+	case 612:
+	case 613:
+	case 614:
 		return true;
 	}
 	return false;

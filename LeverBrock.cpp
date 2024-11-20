@@ -31,7 +31,7 @@ void LeverBrock::Draw()
 	int x = (int)transform_.position_.x;
 	int y = (int)transform_.position_.y;
 
-	DrawRectGraph(x- fi->Getscroll(), y, LB_SIZE.w *4, LB_SIZE.h * 3, LB_SIZE.w, LB_SIZE.h, hImage, TRUE);
+	DrawRectGraph(x - fi->Getscroll(), y, LB_SIZE.w * 4, LB_SIZE.h * (3+LeverBrockID), LB_SIZE.w, LB_SIZE.h, hImage, TRUE);
 }
 
 void LeverBrock::Release()
