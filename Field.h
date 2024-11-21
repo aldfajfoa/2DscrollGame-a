@@ -1,6 +1,7 @@
 #pragma once
 #include "Engine/GameObject.h"
 class Camera;
+class Player;
 
 /// <summary>
 /// 地面（プレイフィールド）
@@ -49,10 +50,6 @@ public:
 	void IsScroll();
 	bool GetLeftSc() { return LeftSc; }
 	bool GetRightSc() { return RightSc; }
-	bool IsCollisionRight(int i);
-	bool IsCollisionLeft(int i);
-	bool IsCollisionUp(int i);
-	bool IsCollisionDown(int i);
 
 	bool EnemyCollisionRight(int i);
 	bool EnemyCollisionLeft(int i);
@@ -62,6 +59,7 @@ public:
 	int Getscroll() { return scroll; }
 	void ChangeChip(int x, int y, int changeNum);
 private:
+	const int CH_SIZE = 32;//マップチップサイズ
 	Camera* cam;
 	int hImage;
 	int background;
@@ -69,6 +67,7 @@ private:
 
 	bool IsWallBlock(int x, int y);
 	int* Map;
+	int Backnum;//背景の枚数
 	int width;
 	int height;
 	int sousa;

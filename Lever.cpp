@@ -14,11 +14,15 @@ namespace
 Lever::Lever(GameObject* scene) 
 	:GameObject(scene, "Lever")
 {
+	transform_.position_.x = -100;
+	transform_.position_.y = -100;
+
 	hImage = LoadGraph("Assets/Lever_.png");
 	assert(hImage > 0);
 	ReversX = true;
 	lMas = ((LeverMaster*)(this->GetParent()));
 	fi = lMas->GetParent()->FindGameObject<Field>();
+	soundHandle = LoadSoundMem("Assets/ƒŒƒo[.mp3");
 }
 
 void Lever::Initialize()
@@ -32,6 +36,10 @@ void Lever::Update()
 	if (p != nullptr) {
 		if (p->CollideCircle(transform_.position_.x + (L_SIZE.w / 2), transform_.position_.y + (L_SIZE.h / 2), 20.0f))
 		{
+			if (ReversX == true)
+			{
+				PlaySoundMem(soundHandle, DX_PLAYTYPE_BACK);
+			}
 			ReversX = false;
 			DestroyLBrock();
 		}
@@ -45,9 +53,6 @@ void Lever::Draw()
 	
 	Camera* lcam = lMas->Getcam();
 	Lscroll = fi->Getscroll();
-	if (lcam != nullptr) {
-		Lscroll = lcam->GetValue();
-	}
 	DrawRectGraph(x-Lscroll, y,0,0,L_SIZE.w,L_SIZE.h, hImage, TRUE, ReversX);
 }
 

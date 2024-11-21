@@ -49,6 +49,7 @@ void Field::Reset()
 	width = csv.GetWidth(0);
 	height = csv.GetHeight();
 	Map = new int[width * height];//C言語での動的二次元配列の取り方
+	Backnum = (width * CH_SIZE / WIN_WIDTH) + 1;//ステージの広さに合わせて背景を用意
 	
 	for (int h = 0; h < height; h++) 
 	{
@@ -152,7 +153,9 @@ void Field::Update()
 
 void Field::Draw()
 {
-	DrawGraph(0,0, background, TRUE);
+	for (int i = 0; i < Backnum; i++) {
+		DrawRectGraph((WIN_WIDTH * i) - scroll, 0, 0, 0, WIN_WIDTH, WIN_HEIGHT, background, TRUE);
+	}
 	DrawGraph(0, 0, stone, TRUE);
 	DrawGraph(0, 50, sousa, TRUE);
 
@@ -238,102 +241,6 @@ void Field::IsScroll()
 	}
 }
 
-bool Field::IsCollisionRight(int i)
-{
-	Player* pPlayer = GetParent()->FindGameObject<Player>();
-	int Nx = pPlayer->GetPosition().x / 32;
-	int Ny = (pPlayer->GetPosition().y + i) / 32;
-	switch (Map[Ny * width + Nx + 2]) {
-	case 16:
-	case 17:
-	case 18:
-	case 19:
-	case 32:
-	case 33:
-	case 34:
-	case 35:
-	case 610:
-	case 611:
-	case 612:
-	case 613:
-	case 614:
-		return true;
-	}
-	return false;
-}
-
-bool Field::IsCollisionLeft(int i)
-{
-	Player* pPlayer = GetParent()->FindGameObject<Player>();
-	int Nx = pPlayer->GetPosition().x / 32;
-	int Ny = (pPlayer->GetPosition().y + i) / 32;
-	switch (Map[Ny * width + Nx]) {
-	case 16:
-	case 17:
-	case 18:
-	case 19:
-	case 32:
-	case 33:
-	case 34:
-	case 35:
-	case 610:
-	case 611:
-	case 612:
-	case 613:
-	case 614:
-		return true;
-	}
-	return false;
-}
-
-bool Field::IsCollisionUp(int i)
-{
-	Player* pPlayer = GetParent()->FindGameObject<Player>();
-	int Nx = (pPlayer->GetPosition().x + i) / 32;
-	int Ny = pPlayer->GetPosition().y / 32;
-	switch (Map[Ny * width + Nx]) {
-	case 16:
-	case 17:
-	case 18:
-	case 19:
-	case 32:
-	case 33:
-	case 34:
-	case 35:
-	case 610:
-	case 611:
-	case 612:
-	case 613:
-	case 614:
-		return true;
-	}
-	return false;
-}
-
-bool Field::IsCollisionDown(int i)
-{
-	Player* pPlayer = GetParent()->FindGameObject<Player>();
-	int Nx = (pPlayer->GetPosition().x + i) / 32;
-	int Ny = (pPlayer->GetPosition().y + 88) / 32;
-	switch (Map[Ny * width + Nx]) {
-	case 16:
-	case 17:
-	case 18:
-	case 19:
-	case 32:
-	case 33:
-	case 34:
-	case 35:
-	case 610:
-	case 611:
-	case 612:
-	case 613:
-	case 614:
-		return true;
-	}
-	return false;
-}
-
 bool Field::EnemyCollisionRight(int i)
 {
 	Enemy1* en1 = GetParent()->FindGameObject<Enemy1>();
@@ -404,4 +311,3 @@ bool Field::IsWallBlock(int x, int y)
 	}
 	return false;
 }
-

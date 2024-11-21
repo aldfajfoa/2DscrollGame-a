@@ -45,6 +45,7 @@ private:
 
 	int hImage;
 	int kazu;
+	int soundHandle;   // ‰¹º‚Ìƒnƒ“ƒhƒ‹
 
 	XINPUT_STATE input;
 	int i;

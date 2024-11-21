@@ -41,6 +41,9 @@ Player::Player(GameObject* parent)
 	transparency = 0;
 	readyTimer = 1.5f;
 	p_speed = MOVE_SPEED;
+
+	soundHandle = LoadSoundMem("Assets/Î“Š‚°‚é.mp3");
+
 	Reset();
 }
 
@@ -105,6 +108,7 @@ void Player::Update()
 		{
 			if (counter <= 0)
 			{
+				PlaySoundMem(soundHandle, DX_PLAYTYPE_BACK);
 				counter = 160;
 				if (counter == 160)
 				{
@@ -118,6 +122,7 @@ void Player::Update()
 		{
 			if (counter <= 0)
 			{
+				PlaySoundMem(soundHandle, DX_PLAYTYPE_BACK);
 				counter = 160;
 				if (counter == 160)
 				{
@@ -258,37 +263,56 @@ void Player::ControlCollision()
 {
 	Field* map = GetParent()->FindGameObject<Field>();
 
-	int collX1 = P_SIZE.w / 4;
-	int collX2 = P_SIZE.w - collX1;
-	int collY1 = P_SIZE.h / 5;
-	int collY2 = P_SIZE.h - collY1;
+	int push = map->CollisionRight(transform_.position_.x + P_SIZE.w-10, transform_.position_.y + 80);
 
-	if (map->IsCollisionRight(collY1) || map->IsCollisionRight(collY2)) {
-		transform_.position_.x -= tmpPosx % 32 / 10;
+	if (push > 1)
+	{
+		int tmp = transform_.position_.x;
+		transform_.position_.x -= tmp % 32 / 10;
 	}
 
-	if (map->IsCollisionLeft(collY1) || map->IsCollisionLeft(collY2)) {
-		transform_.position_.x += tmpPosx % 32 / 10;
+	push = map->CollisionLeft(transform_.position_.x+10, transform_.position_.y + 80);
+
+	if (push > 1)
+	{
+		int tmp = transform_.position_.x;
+		transform_.position_.x += tmp % 32 / 10;
 	}
 
-	if (map->IsCollisionUp(collX1) || map->IsCollisionUp(collX2)) {
+    push = map->CollisionUp(transform_.position_.x + P_SIZE.w/2, transform_.position_.y);
+
+	if (push > 1)
+	{
+		int tmp = transform_.position_.x;
+		transform_.position_.x -= tmp % 32 / 10;
 		ceiling = tmpPosy;
 	}
 	else {
 		ceiling = 0;
 	}
 
-	if (map->IsCollisionDown(collX1) || map->IsCollisionDown(collX2)) {
+	if (map != nullptr)
+	{
 		if (firstGround) {
 			Ground -= 20;
 			firstGround = false;
 		}
 		else {
-			Ground = tmpPosy;
+			int pushR = map->CollisionDown(transform_.position_.x + 60, transform_.position_.y + 85);
+			int pushL = map->CollisionDown(transform_.position_.x + 25, transform_.position_.y + 85);
+			int push = max(pushR, pushL);//‚Q‚Â‚Ì‘«Œ³‚Ì‚ß‚è‚İ‚Ì‘å‚«‚¢•û
+			if (push >= 1)
+			{
+				transform_.position_.y -= push - 1;
+				jumpSpeed = 0.0f;
+				onGround = true;
+			}
+			else
+			{
+				Ground = 1000;
+				onGround = false;
+			}
 		}
-	}
-	else {
-		Ground = 1000;
 	}
 }
 

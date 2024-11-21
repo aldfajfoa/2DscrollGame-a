@@ -15,7 +15,7 @@ class Lever :
 	LeverMaster* lMas;
 	int Lscroll;
 	int LeverID;
-	
+	int soundHandle;//‰¹º‚Ìƒnƒ“ƒhƒ‹
 public:
 	Lever(GameObject* scene);
 	void Initialize() override;
