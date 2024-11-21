@@ -3,6 +3,7 @@
 class GameOverScene :
     public GameObject
 {
+	int count;
 public:
 	//コンストラクタ
 	//引数：parent  親オブジェクト（SceneManager）
@@ -24,5 +25,6 @@ private:
 	int s;
 	int q;
 	int counter;
+	XINPUT_STATE input;
 };
 

@@ -56,6 +56,8 @@ Player::~Player()
 
 void Player::Update()
 {
+	// “ü—Íó‘Ô‚ðŽæ“¾
+	GetJoypadXInputState(DX_INPUT_PAD1, &input);
 	tmpPosx = transform_.position_.x;
 	tmpPosy = transform_.position_.y;
 
@@ -64,15 +66,6 @@ void Player::Update()
 	lMas = GetParent()->FindGameObject<LeverMaster>();
 
 	counter -= 1;
-
-	if (state == S_Cry)
-	{
-		if (frameCounter >= 4)
-		{
-			frameCounter = 0;
-		}
-		return;
-	}
 
 	TestScene* scene = dynamic_cast<TestScene*>(GetParent());
 	if (!scene->CanMove())
@@ -121,6 +114,19 @@ void Player::Update()
 				st->SetPosition(transform_.position_);
 			}
 		}
+		if (input.Buttons[XINPUT_BUTTON_B] == 1)
+		{
+			if (counter <= 0)
+			{
+				counter = 160;
+				if (counter == 160)
+				{
+					count += 1;
+					STONE_NUMBER -= 47;
+				}
+				st->SetPosition(transform_.position_);
+			}
+		}
 	}
 
 	//“G1‚Ì“–‚½‚è”»’è
@@ -133,8 +139,6 @@ void Player::Update()
 			animFrame = 0;
 			state = S_Cry;
 			scene->StartDead();
-			//SceneManager* pSceneManager = (SceneManager*)FindObject("SceneManager");
-			//pSceneManager->ChangeScene(SCENE_ID_GAMEOVER);
 		}
 	}
 
@@ -146,10 +150,7 @@ void Player::Update()
 		{
 			animType = 4;
 			animFrame = 0;
-			//state = S_Cry;
 			scene->StartDead();
-			//SceneManager* pSceneManager = (SceneManager*)FindObject("SceneManager");
-			//pSceneManager->ChangeScene(SCENE_ID_GAMEOVER);
 		}
 	}
 
@@ -300,6 +301,22 @@ bool Player::MovePlayer()
 		return true;
 	}
 	else if (CheckHitKey(KEY_INPUT_A))//Œã‘Þ
+	{
+		ReversX = true;
+		transform_.position_.x -= p_speed;
+		return true;
+	}
+
+	// “ü—Íó‘Ô‚ðŽæ“¾
+	GetJoypadXInputState(DX_INPUT_PAD1, &input);
+
+	if (input.ThumbLX >= 10000)
+	{
+		ReversX = false;
+		transform_.position_.x += p_speed;
+		return true;
+	}
+	else if (input.ThumbLX <= -10000)
 	{
 		ReversX = true;
 		transform_.position_.x -= p_speed;

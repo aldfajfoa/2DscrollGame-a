@@ -46,6 +46,8 @@ private:
 	int hImage;
 	int kazu;
 
+	XINPUT_STATE input;
+	int i;
 	GameObject* sceneTop;
 	Camera* cam;
 	Field* field;

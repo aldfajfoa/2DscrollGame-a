@@ -8,6 +8,7 @@
 namespace
 {
 	static const int SCREEN_WIDTH = 1280;
+	static float t = 0;
 }
 
 
@@ -99,17 +100,7 @@ void SpeedStone::Update()
 
 	if (isAlive == false)
 	{
-		if (t <= 115)
-		{
-			p->Setp_speed(p->GetMOVE_SPEED2());
-			t++ ;
-		}
-		else
-		{
-			p->Setp_speed(p->GetMOVE_SPEED());
-			t = 0;
-			KillMe();
-		}
+		KillStone();
 	}
 }
 
@@ -151,7 +142,17 @@ void SpeedStone::Reset()
 	KillMe();
 }
 
-//void SpeedStone::KillStone()
-//{
-	
-//}
+void SpeedStone::KillStone()
+{
+	if (t <= 115)
+	{
+		p->Setp_speed(p->GetMOVE_SPEED2());
+		t++;
+	}
+	else
+	{
+		p->Setp_speed(p->GetMOVE_SPEED());
+		KillMe();
+		t = 0;
+	}
+}

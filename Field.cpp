@@ -173,8 +173,6 @@ void Field::Draw()
 			DrawRectGraph((x*32)-scroll, y*32, 32*(chip % 16), 32*(chip / 16), 32,32, hImage, TRUE);
 		}
 	}
-
-	//DrawGraph(WIN_WIDTH - 305, WIN_HEIGHT - 95, controll, TRUE);
 }
 
 int Field::CollisionRight(int x, int y)

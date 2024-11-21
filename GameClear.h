@@ -3,6 +3,7 @@
 class GameClear :
     public GameObject
 {
+	int count;
 public:
 	//コンストラクタ
 	//引数：parent  親オブジェクト（SceneManager）
@@ -24,4 +25,5 @@ private:
 	int mori;
 	int s;
 	int e;
+	XINPUT_STATE input;
 };

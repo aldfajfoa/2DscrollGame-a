@@ -9,7 +9,7 @@
 
 //コンストラクタ
 TestScene::TestScene(GameObject * parent)
-	: GameObject(parent, "TestScene")
+	: GameObject(parent, "TestScene"), isSoundPlaying(false), soundHandle(-1)
 {
 }
 
@@ -22,12 +22,19 @@ void TestScene::Initialize()
 	Instantiate<Player>(this);
 	pField->Reset();
 	Instantiate<Banner>(this);
+
+	soundHandle = LoadSoundMem("Assets/Dream_diffuser.mp3");
+	PlaySoundMem(soundHandle, DX_PLAYTYPE_LOOP);
+	isSoundPlaying = true;
+
 	StartReady();
 }
 
 //更新
 void TestScene::Update()
 {
+	GetJoypadXInputState(DX_INPUT_PAD1, &input);
+
 	switch (state) {
 	case S_Ready:UpdateReady(); break;
 	case S_Play:UpdatePlay(); break;
@@ -44,6 +51,10 @@ void TestScene::Draw()
 //開放
 void TestScene::Release()
 {
+	StopSoundMem(soundHandle);
+	DeleteSoundMem(soundHandle);
+	soundHandle = -1;
+	isSoundPlaying = false;
 }
 
 bool TestScene::CanMove()
@@ -85,20 +96,12 @@ void TestScene::UpdatePlay()
 
 void TestScene::UpdateClear()
 {
-	//readyTimer -= 1.0f / 60.0f;
-	//if (readyTimer <= 0.0f)
-	//{
-	//	SceneManager* pSceneManager = (SceneManager*)FindObject("SceneManager");
-	//	pSceneManager->ChangeScene(SCENE_ID_GAMECLEAR);
-	//}
 }
 
 void TestScene::StartDead()
 {
 	readyTimer = 1.5f;
 	state = S_Dead;
-	//Banner* bn = FindGameObject<Banner>();
-	//bn->View(Banner::ViewID::V_GameOver);
 }
 
 void TestScene::UpdateDead()
